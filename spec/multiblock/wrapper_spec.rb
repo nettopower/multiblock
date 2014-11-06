@@ -35,6 +35,11 @@ describe Multiblock::Wrapper do
     }.should raise_exception(ArgumentError, "No block given when registering 'foo' block.")
   end
 
+  it 'should call registered block by method' do
+    wrapper.foo { 'foo' }
+    wrapper.foo.should == 'foo'
+  end
+
   context "with custom default block" do
     let(:wrapper) {
       described_class.new { "default" }
