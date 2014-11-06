@@ -22,6 +22,12 @@ module Multiblock
     def wrapper(*args, &blk)
       Wrapper.new(*args, &blk)
     end
+
+    def wrap(defaults=::Kernel.lambda { |*args| nil }, &blk)
+      wrapper = Wrapper.new(&defaults)
+      yield(wrapper)
+      wrapper
+    end
   end
 end
 
