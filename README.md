@@ -80,6 +80,22 @@ To make it work, let's define `process` method in following way:
       end
     end
 
+    or use the wrap method and proc_wrap to loose some of the plumbing
+
+    require 'multiblock/proc_wrap'
+    def process(message, &callback)
+      # do actual processing...
+
+      if result == "success"
+        callback.wrap.success
+      else
+        callback.wrap.failure
+      end
+    end
+
+
+
+
 Another example which kinda resembles `respond_with` feature from Ruby on Rails `ActionController`:
 
     def respond_with(object)
@@ -88,6 +104,18 @@ Another example which kinda resembles `respond_with` feature from Ruby on Rails 
 
       # assume that request.format returns either 'json' or 'xml'
       wrapper.call(request.format, object)
+    end
+
+    respond_with(object) do |format|
+      format.xml  { |object| render :xml  => object.to_xml  }
+      format.json { |object| render :json => object.to_json }
+    end
+
+or use the wrap method and proc_wrap to loose some of the plumbing
+
+    def respond_with(object, &format)
+      # assume that request.format returns either 'json' or 'xml'
+      format.wrap.call(request.format, object)
     end
 
     respond_with(object) do |format|
