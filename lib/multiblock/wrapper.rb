@@ -8,10 +8,11 @@ module Multiblock
 
     def method_missing(name, *args, &blk)
       if @blocks.has_key?(name.to_s) && blk.nil?
-        call(name, args)
+        call(name, *args)
       else
         ::Kernel.raise ::ArgumentError.new("No block given when registering '#{name}' block.") if blk.nil?
         @blocks[name.to_s] = blk
+        self
       end
     end
 

@@ -40,6 +40,11 @@ describe Multiblock::Wrapper do
     wrapper.foo.should == 'foo'
   end
 
+  it 'should call registered block by method with parameters' do
+    wrapper.foo { |arg| arg }
+    wrapper.foo('bar').should == 'bar'
+  end
+
   context "with custom default block" do
     let(:wrapper) {
       described_class.new { "default" }
